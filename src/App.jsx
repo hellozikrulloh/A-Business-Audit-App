@@ -91,7 +91,7 @@ function App() {
   return (
     <>
       {step === 0 && <LandingPage onStart={startAudit} />}
-      {step === 1 && <Questionnaire onComplete={handleComplete} />}
+      {step === 1 && <Questionnaire onComplete={handleComplete} onBackToHome={() => setStep(0)} />}
       {step === 2 && <Dashboard results={results} onRestart={restartAudit} />}
     </>
   );

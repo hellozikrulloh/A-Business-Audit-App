@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Check, Building2, User, Megaphone, Laptop, Briefcase, ShoppingBag } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, Building2, User, Megaphone, Laptop, Briefcase, ShoppingBag, TrendingUp } from 'lucide-react';
 import Tooltip from './Tooltip';
 
 const questions = [
@@ -97,7 +97,7 @@ const questions = [
   }
 ];
 
-const Questionnaire = ({ onComplete }) => {
+const Questionnaire = ({ onComplete, onBackToHome }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [inputValue, setInputValue] = useState('');
@@ -154,13 +154,26 @@ const Questionnaire = ({ onComplete }) => {
       {/* Header / Progress bar */}
       <header className="p-6 md:p-10 w-full max-w-4xl mx-auto flex items-center justify-between">
         <button 
-          onClick={handleBack}
-          className={`flex items-center text-slate-400 hover:text-white transition-colors ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          onClick={onBackToHome}
+          className="flex items-center space-x-2 group hover:opacity-85 transition-opacity cursor-pointer"
+          title="Bosh sahifaga qaytish"
         >
-          <ArrowLeft className="w-5 h-5 mr-2" /> Orqaga
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+            <TrendingUp className="w-5 h-5 text-white" />
+          </div>
+          <span className="font-bold text-xl tracking-tight text-white">AuditPro</span>
         </button>
-        <div className="text-slate-500 font-medium">
-          {currentIndex + 1} / {questions.length}
+
+        <div className="flex items-center space-x-6">
+          <button 
+            onClick={handleBack}
+            className={`flex items-center text-slate-400 hover:text-white transition-colors cursor-pointer ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" /> Orqaga
+          </button>
+          <div className="text-slate-500 font-medium">
+            {currentIndex + 1} / {questions.length}
+          </div>
         </div>
       </header>
 
