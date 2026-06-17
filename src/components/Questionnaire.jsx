@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Check, Building2, User, Megaphone, Laptop, Briefcase, ShoppingBag, TrendingUp } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, Building2, User, Megaphone, Laptop, Briefcase, ShoppingBag, TrendingUp, AlertTriangle } from 'lucide-react';
 import Tooltip from './Tooltip';
 
 const questions = [
@@ -101,6 +101,54 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [inputValue, setInputValue] = useState('');
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  const currentIndexRef = useRef(currentIndex);
+  const popStateRef = useRef(null);
+
+  useEffect(() => {
+    currentIndexRef.current = currentIndex;
+  }, [currentIndex]);
+
+  useEffect(() => {
+    // Push state once to intercept back button
+    window.history.pushState(null, document.title, window.location.href);
+
+    const handlePopState = () => {
+      if (currentIndexRef.current === 0) {
+        onBackToHome();
+      } else {
+        // Push state again to block navigation and show modal
+        window.history.pushState(null, document.title, window.location.href);
+        setShowExitConfirm(true);
+      }
+    };
+
+    popStateRef.current = handlePopState;
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      if (popStateRef.current) {
+        window.removeEventListener('popstate', popStateRef.current);
+      }
+    };
+  }, [onBackToHome]);
+
+  const handleExit = () => {
+    if (popStateRef.current) {
+      window.removeEventListener('popstate', popStateRef.current);
+    }
+    window.history.back();
+    onBackToHome();
+  };
+
+  const handleLogoClick = () => {
+    if (currentIndex === 0) {
+      handleExit();
+    } else {
+      setShowExitConfirm(true);
+    }
+  };
 
   const currentQuestion = questions[currentIndex];
 
@@ -154,7 +202,7 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
       {/* Header / Progress bar */}
       <header className="p-6 md:p-10 w-full max-w-4xl mx-auto flex items-center justify-between">
         <button 
-          onClick={onBackToHome}
+          onClick={handleLogoClick}
           className="flex items-center space-x-2 group hover:opacity-85 transition-opacity cursor-pointer"
           title="Bosh sahifaga qaytish"
         >
@@ -271,6 +319,65 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
       <footer className="p-6 text-center text-slate-600 text-sm">
         Enter tugmasini bosish orqali ham keyingisiga o'tishingiz mumkin
       </footer>
+
+      {/* Exit Confirmation Modal */}
+      <AnimatePresence>
+        {showExitConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowExitConfirm(false)}
+              className="absolute inset-0 bg-slate-950/80 backdrop-blur-md"
+            />
+            
+            {/* Modal Box */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center shadow-2xl z-10 overflow-hidden"
+            >
+              {/* Top glow */}
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 bg-red-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+              {/* Warning Icon */}
+              <div className="mx-auto w-16 h-16 bg-red-500/10 rounded-2xl flex items-center justify-center mb-6 border border-red-500/20">
+                <AlertTriangle className="w-8 h-8 text-red-400 animate-pulse" />
+              </div>
+
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-white mb-3">
+                Auditdan chiqmoqchimisiz?
+              </h3>
+
+              {/* Description */}
+              <p className="text-slate-400 mb-8 leading-relaxed">
+                Haqiqatan ham auditdan chiqmoqchimisiz? Kiritilgan ma'lumotlar saqlanmaydi va hammasini boshidan boshlashingizga to'g'ri keladi.
+              </p>
+
+              {/* Buttons */}
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setShowExitConfirm(false)}
+                  className="px-6 py-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition-colors cursor-pointer"
+                >
+                  Qolish
+                </button>
+                <button
+                  onClick={handleExit}
+                  className="px-6 py-4 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:shadow-[0_0_30px_rgba(239,68,68,0.4)] cursor-pointer"
+                >
+                  Ha, chiqish
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
