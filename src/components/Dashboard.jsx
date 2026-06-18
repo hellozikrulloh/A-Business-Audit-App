@@ -29,49 +29,61 @@ const Dashboard = ({ results, onRestart }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans p-4 sm:p-8 selection:bg-blue-500/30">
+    <div className="min-h-screen bg-[#0a0f1c] text-slate-100 font-sans p-4 sm:p-8 selection:bg-blue-500/30">
       <div className="max-w-6xl mx-auto space-y-8 animate-in slide-in-from-bottom-8 fade-in duration-700">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-900/50 p-6 rounded-3xl border border-slate-800">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold flex items-center">
-              <Activity className="w-8 h-8 text-blue-500 mr-3" />
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/[0.02] backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/5 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[60px] pointer-events-none"></div>
+          <div className="relative z-10">
+            <h1 className="text-3xl md:text-4xl font-bold flex items-center mb-2 tracking-tight">
+              <Activity className="w-8 h-8 text-blue-500 mr-3 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
               Biznes Audit Xulosasi
             </h1>
-            <p className="text-slate-400 mt-2 text-lg">Sizning ma'lumotlaringiz asosida tayyorlangan chuqur tahlil.</p>
+            <p className="text-slate-400 mt-2 text-lg max-w-2xl">Sizning ma'lumotlaringiz asosida tayyorlangan chuqur tahlil va ko'rsatmalar.</p>
           </div>
           <button 
             onClick={onRestart}
-            className="mt-4 md:mt-0 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-medium flex items-center transition-colors"
+            className="mt-6 md:mt-0 px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-medium flex items-center transition-all border border-white/10 hover:border-white/20 shadow-md cursor-pointer relative z-10"
           >
-            <RefreshCcw className="w-5 h-5 mr-2" /> Boshqadan boshlash
+            <RefreshCcw className="w-5 h-5 mr-2" /> QAYTA BOSHLASH
           </button>
         </div>
 
         {/* Main Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-center">
-            <h3 className="text-sm font-medium text-slate-400 mb-2 uppercase tracking-wider">Moliyaviy Maqsad</h3>
-            <div className="text-4xl font-black text-white">${results.revenueTarget.toLocaleString()}</div>
+          <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-6 rounded-3xl shadow-lg flex flex-col justify-center relative group hover:border-blue-500/30 hover:z-30 transition-all">
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h3 className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-widest relative z-10">Moliyaviy Maqsad</h3>
+            <div className="text-3xl lg:text-4xl font-black text-white relative z-10">${results.revenueTarget.toLocaleString()}</div>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-center">
-            <h3 className="text-sm font-medium text-slate-400 mb-2 uppercase tracking-wider">Sotuv Konversiyasi</h3>
-            <div className="text-4xl font-black text-blue-400">{results.conversion}%</div>
+          <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-6 rounded-3xl shadow-lg flex flex-col justify-center relative group hover:border-blue-500/30 hover:z-30 transition-all">
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h3 className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-widest relative z-10">Sotuv Konversiyasi</h3>
+            <div className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 relative z-10">{results.conversion}%</div>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-center">
-            <h3 className="text-sm font-medium text-slate-400 mb-2 uppercase tracking-wider flex items-center">
+          <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-6 rounded-3xl shadow-lg flex flex-col justify-center relative group hover:border-purple-500/30 hover:z-30 transition-all">
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h3 className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-widest flex items-center relative z-20">
               Lid Narxi (CPL)
-              <div className="scale-75 origin-left ml-1"><Tooltip title="Lid Narxi (CPL)" text="Bitta qiziqish bildirgan potensial mijoz (lid) ni jalb qilish uchun ketadigan o'rtacha xarajat." /></div>
+              <div className="scale-75 origin-left ml-2"><Tooltip title="Lid Narxi (CPL)" text="Bitta qiziqish bildirgan potensial mijoz (lid) ni jalb qilish uchun ketadigan o'rtacha xarajat." /></div>
             </h3>
-            <div className="text-4xl font-black text-purple-400">
+            <div className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 relative z-10">
               {results.customCpl > 0 ? `$${results.customCpl}` : '$0.8 - $1.5'}
             </div>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-center relative overflow-hidden">
-            <div className={`absolute right-0 top-0 w-32 h-32 blur-3xl opacity-20 ${results.riskColor.replace('text-', 'bg-')}`}></div>
-            <h3 className="text-sm font-medium text-slate-400 mb-2 uppercase tracking-wider relative z-10">Biznes Holati (Xavf)</h3>
-            <div className={`text-4xl font-black relative z-10 ${results.riskColor}`}>{results.riskLevel}</div>
+          <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-6 rounded-3xl shadow-lg flex flex-col justify-center relative group hover:z-30">
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <div className={`absolute -right-5 -top-5 w-24 h-24 blur-[30px] opacity-10 ${results.riskColor.replace('text-', 'bg-')}`}></div>
+            </div>
+            <h3 className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-widest relative z-10">Biznes Holati</h3>
+            <div className={`text-3xl lg:text-4xl font-black relative z-10 ${results.riskColor}`}>{results.riskLevel}</div>
           </div>
         </div>
 
@@ -79,19 +91,20 @@ const Dashboard = ({ results, onRestart }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* Funnel Chart */}
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-xl">
-            <h3 className="text-xl font-bold mb-6 flex items-center">
-              <TrendingUp className="w-6 h-6 mr-3 text-purple-500" />
+          <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-8 rounded-3xl shadow-lg relative overflow-hidden">
+            <div className="absolute -left-20 top-20 w-40 h-40 bg-purple-500/5 rounded-full blur-[60px] pointer-events-none"></div>
+            <h3 className="text-xl md:text-2xl font-bold mb-6 flex items-center relative z-10">
+              <TrendingUp className="w-6 h-6 mr-3 text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.3)]" />
               Sotuv Voronkasi (Maqsad uchun)
             </h3>
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="text-slate-500 text-sm mb-1">Kerakli Lidlar</div>
-                <div className="text-3xl font-bold text-purple-400">{results.requiredLeads} <span className="text-base font-normal">ta</span></div>
+            <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
+              <div className="bg-slate-900/50 p-5 rounded-2xl border border-white/5 shadow-inner">
+                <div className="text-slate-400 text-sm mb-1 font-medium">Kerakli Lidlar</div>
+                <div className="text-3xl font-bold text-purple-400">{results.requiredLeads} <span className="text-base font-normal text-slate-500">ta</span></div>
               </div>
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="text-slate-500 text-sm mb-1">Kerakli Mijozlar</div>
-                <div className="text-3xl font-bold text-emerald-400">{results.requiredCustomers} <span className="text-base font-normal">ta</span></div>
+              <div className="bg-slate-900/50 p-5 rounded-2xl border border-white/5 shadow-inner">
+                <div className="text-slate-400 text-sm mb-1 font-medium">Kerakli Mijozlar</div>
+                <div className="text-3xl font-bold text-emerald-400">{results.requiredCustomers} <span className="text-base font-normal text-slate-500">ta</span></div>
               </div>
             </div>
             <div className="h-[200px] w-full">
@@ -112,19 +125,20 @@ const Dashboard = ({ results, onRestart }) => {
           </div>
 
           {/* Budget Chart */}
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-xl">
-            <h3 className="text-xl font-bold mb-6 flex items-center">
-              <Activity className="w-6 h-6 mr-3 text-blue-500" />
+          <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-8 rounded-3xl shadow-lg relative overflow-hidden">
+            <div className="absolute -right-20 top-20 w-40 h-40 bg-blue-500/5 rounded-full blur-[60px] pointer-events-none"></div>
+            <h3 className="text-xl md:text-2xl font-bold mb-6 flex items-center relative z-10">
+              <Activity className="w-6 h-6 mr-3 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
               Reklama Byudjeti va Yo'qotishlar
             </h3>
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="text-slate-500 text-sm mb-1">Minimal Byudjet</div>
+            <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
+              <div className="bg-slate-900/50 p-5 rounded-2xl border border-white/5 shadow-inner">
+                <div className="text-slate-400 text-sm mb-1 font-medium">Minimal Byudjet</div>
                 <div className="text-3xl font-bold text-white">${results.minBudget.toLocaleString()}</div>
               </div>
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 bg-red-500/5">
-                <div className="text-slate-500 text-sm mb-1">Jarima ({results.penaltyPercent}%)</div>
-                <div className="text-3xl font-bold text-red-400">+${(results.minBudget * (results.penaltyPercent / 100)).toLocaleString()}</div>
+              <div className="bg-red-500/5 p-5 rounded-2xl border border-red-500/10 shadow-inner">
+                <div className="text-slate-400 text-sm mb-1 font-medium">Jarima ({results.penaltyPercent}%)</div>
+                <div className="text-3xl font-bold text-red-400 drop-shadow-[0_0_5px_rgba(239,68,68,0.2)]">+${(results.minBudget * (results.penaltyPercent / 100)).toLocaleString()}</div>
               </div>
             </div>
             
@@ -163,8 +177,9 @@ const Dashboard = ({ results, onRestart }) => {
         </div>
 
         {/* Actionable Solutions / Harakatlar Rejasi */}
-        <div className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-3xl shadow-xl">
-          <h2 className="text-3xl font-bold mb-8">Harakatlar Rejasi (Siz uchun yechimlar)</h2>
+        <div className="bg-white/[0.02] backdrop-blur-md border border-white/5 p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 relative z-10 tracking-tight">Harakatlar Rejasi</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
@@ -199,10 +214,12 @@ const Dashboard = ({ results, onRestart }) => {
                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
                 <div className="flex items-start mb-4">
                   <AlertTriangle className="w-6 h-6 text-orange-500 mr-3 flex-shrink-0" />
-                  <h3 className="text-xl font-bold">2. Sotuv menejeri yollang</h3>
+                  <h3 className="text-xl font-bold">2. Sotuv bo'limini kengaytirish</h3>
                 </div>
                 <p className="text-slate-400 mb-4 leading-relaxed">
-                  Asoschi (biznes egasi) operatsion ishlarga ko'milib qolganida konversiya tushib ketadi. Mijozlarga o'z vaqtida, professional skript bilan javob beruvchi alohida xodim shart.
+                  {results.isBusinessOwner === 'no' 
+                    ? "Xodim/menejer sifatida barcha operatsion ishlarga o'zingiz ulgurmasligingiz mumkin. Mijozlarga o'z vaqtida javob berish uchun jamoani kengaytirish zarur."
+                    : "Asoschi (biznes egasi) operatsion ishlarga ko'milib qolganida konversiya tushib ketadi. Mijozlarga o'z vaqtida, professional skript bilan javob beruvchi alohida xodim shart."}
                 </p>
                 <div className="bg-slate-900 p-4 rounded-xl">
                   <span className="font-semibold text-emerald-400 block mb-2">Qadamlar:</span>
@@ -242,19 +259,19 @@ const Dashboard = ({ results, onRestart }) => {
             </div>
 
             {/* Yechim 4: Mutaxassis */}
-            <div className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 p-8 rounded-3xl relative overflow-hidden md:col-span-2 shadow-2xl mt-4">
+            <div className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 p-8 rounded-3xl relative overflow-hidden md:col-span-2 shadow-xl mt-4">
               <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="flex-1">
                   <div className="flex items-center mb-3">
                     <CheckCircle2 className="w-7 h-7 text-blue-400 mr-3 flex-shrink-0" />
-                    <h3 className="text-2xl font-bold text-white">100% Kafolatli yechim: Mutaxassis bilan ishlash</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">100% Kafolatli yechim: Mutaxassis bilan ishlash</h3>
                   </div>
-                  <p className="text-slate-300 leading-relaxed text-lg max-w-3xl">
+                  <p className="text-slate-300 leading-relaxed text-base max-w-3xl">
                     Biznesingizdagi bu kamchiliklarni o'zingiz to'g'rilashga vaqtingiz yoki yetarli tajribangiz yo'qmi? Bizning pro-darajadagi mutaxassislarimiz barcha tizimlarni (CRM, Sotuv bo'limi, Marketing) "pod-klyuch" qurib beradi. Natijaga kafolat beramiz!
                   </p>
                 </div>
-                <a href="https://t.me/hellopine" target="_blank" rel="noopener noreferrer" className="text-center w-full md:w-auto whitespace-nowrap px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:shadow-[0_0_30px_rgba(37,99,235,0.7)] flex-shrink-0">
+                <a href="https://t.me/hellopine" target="_blank" rel="noopener noreferrer" className="text-center w-full md:w-auto whitespace-nowrap px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all shadow-md hover:shadow-lg flex-shrink-0">
                   Mutaxassis bilan bog'lanish
                 </a>
               </div>

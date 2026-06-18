@@ -74,7 +74,8 @@ function App() {
       avgCheck,
       conversion,
       customCpl: parseFloat(data.customCpl) || 0,
-      niche: data.niche
+      niche: data.niche,
+      isBusinessOwner: data.isBusinessOwner
     };
 
     setResults(calculatedResults);

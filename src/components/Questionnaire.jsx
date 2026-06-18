@@ -164,7 +164,7 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
       } else {
         onComplete(newAnswers);
       }
-    }, 400);
+    }, 150);
   };
 
   const handleNextInput = () => {
@@ -197,7 +197,7 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
   const progress = ((currentIndex) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-between text-slate-100 selection:bg-blue-500/30">
+    <div className="min-h-screen bg-[#0a0f1c] flex flex-col justify-between text-slate-100 selection:bg-blue-500/30">
       
       {/* Header / Progress bar */}
       <header className="p-6 md:p-10 w-full max-w-4xl mx-auto flex items-center justify-between">
@@ -225,10 +225,11 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
         </div>
       </header>
 
-      <div className="w-full max-w-4xl mx-auto px-6 mb-8">
-        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+      <div className="w-full max-w-4xl mx-auto px-6 mb-8 relative">
+        <div className="absolute top-1/2 left-0 w-full h-4 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
+        <div className="h-1.5 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 backdrop-blur-sm relative z-10">
           <div 
-            className="h-full bg-blue-500 transition-all duration-700 ease-out"
+            className="h-full bg-gradient-to-r from-blue-600 to-emerald-500 transition-all duration-700 ease-out shadow-[0_0_10px_rgba(59,130,246,0.8)]"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
@@ -242,7 +243,7 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className="w-full"
           >
             <div className="flex items-center justify-center mb-8">
@@ -261,14 +262,17 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
                   <button
                     key={option.value}
                     onClick={() => handleChoice(option.value)}
-                    className={`p-6 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center justify-center text-center group
+                    className={`p-6 rounded-3xl border transition-all duration-300 flex flex-col items-center justify-center text-center group relative overflow-hidden cursor-pointer
                       ${answers[currentQuestion.id] === option.value 
-                        ? 'border-blue-500 bg-blue-500/10 shadow-[0_0_20px_rgba(37,99,235,0.2)]' 
-                        : 'border-slate-800 bg-slate-900/50 hover:border-slate-600 hover:bg-slate-800'
+                        ? 'border-blue-500/50 bg-blue-500/10 shadow-[0_0_15px_rgba(37,99,235,0.15)]' 
+                        : 'border-white/5 bg-white/[0.01] hover:border-white/10 hover:bg-white/[0.02]'
                       }
                     `}
                   >
-                    <div className="transition-transform duration-300 group-hover:scale-110">
+                    {answers[currentQuestion.id] === option.value && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none"></div>
+                    )}
+                    <div className="transition-transform duration-300 group-hover:scale-105">
                       {option.icon}
                     </div>
                     <span className="text-xl font-medium">{option.label}</span>
@@ -291,22 +295,36 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder={currentQuestion.placeholder}
-                    className={`w-full bg-slate-900 border-2 border-slate-700 focus:border-blue-500 rounded-2xl py-6 text-3xl font-bold text-center text-white outline-none transition-colors shadow-2xl
+                    className={`w-full bg-[#111827] border border-white/10 focus:border-blue-500 rounded-3xl py-8 text-4xl font-bold text-center text-white outline-none transition-all duration-300 shadow-2xl focus:shadow-[0_0_40px_rgba(59,130,246,0.15)]
                       ${currentQuestion.prefix ? 'pl-16' : ''}
-                      ${currentQuestion.suffix ? 'pr-16' : ''}
+                      ${currentQuestion.suffix ? 'pr-24' : 'pr-16'}
                     `}
                   />
                   {currentQuestion.suffix && (
-                    <span className="absolute right-6 text-3xl text-slate-500 font-bold">{currentQuestion.suffix}</span>
+                    <span className="absolute right-20 text-3xl text-slate-500 font-bold">{currentQuestion.suffix}</span>
                   )}
+                  <div className="absolute right-6 flex flex-col gap-1 z-10">
+                    <button 
+                      onClick={() => setInputValue(Number(inputValue || 0) + 1)}
+                      className="w-8 h-7 bg-slate-800 hover:bg-blue-600 rounded-md flex items-center justify-center text-white transition-colors cursor-pointer"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+                    </button>
+                    <button 
+                      onClick={() => setInputValue(Math.max(0, Number(inputValue || 0) - 1))}
+                      className="w-8 h-7 bg-slate-800 hover:bg-blue-600 rounded-md flex items-center justify-center text-white transition-colors cursor-pointer"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                  </div>
                 </div>
                 <div className="mt-8 flex justify-center">
                   <button
                     onClick={handleNextInput}
                     disabled={!inputValue && currentQuestion.id !== 'customCpl'}
-                    className="px-10 py-4 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white rounded-xl font-bold text-xl flex items-center transition-colors"
+                    className="group relative overflow-hidden px-12 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white rounded-2xl font-bold text-xl flex items-center transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:shadow-none"
                   >
-                    Keyingisi <ArrowRight className="w-6 h-6 ml-2" />
+                    <span className="relative z-10 flex items-center">Keyingisi <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" /></span>
                   </button>
                 </div>
               </div>
@@ -339,7 +357,7 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center shadow-2xl z-10 overflow-hidden"
+              className="relative w-full max-w-md bg-gradient-to-br from-[#111827] to-[#0a0f1c] border border-white/10 rounded-[2.5rem] p-10 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] z-10 overflow-hidden"
             >
               {/* Top glow */}
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 bg-red-500/20 rounded-full blur-2xl pointer-events-none"></div>
@@ -363,13 +381,13 @@ const Questionnaire = ({ onComplete, onBackToHome }) => {
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setShowExitConfirm(false)}
-                  className="px-6 py-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition-colors cursor-pointer"
+                  className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold rounded-2xl transition-all cursor-pointer"
                 >
                   Qolish
                 </button>
                 <button
                   onClick={handleExit}
-                  className="px-6 py-4 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:shadow-[0_0_30px_rgba(239,68,68,0.4)] cursor-pointer"
+                  className="px-6 py-4 bg-red-600/90 hover:bg-red-500 text-white font-semibold rounded-2xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:shadow-[0_0_30px_rgba(239,68,68,0.4)] cursor-pointer"
                 >
                   Ha, chiqish
                 </button>

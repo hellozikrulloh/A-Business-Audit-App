@@ -1,15 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-slate-950: #020617;
-  --color-slate-900: #0f172a;
-  --color-slate-800: #1e293b;
-  --color-slate-100: #f1f5f9;
+  --color-slate-950: #0a0f1c; /* Deep Navy */
+  --color-slate-900: #111827; /* Charcoal */
+  --color-slate-800: #1f2937;
+  --color-slate-100: #f8fafc;
 }
 
 @layer base {
-  body {
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
     background-color: var(--color-slate-950);
     color: var(--color-slate-100);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
   }
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Hide number spinners */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+} 
+input[type="number"] { 
+  -moz-appearance: textfield; 
 }
